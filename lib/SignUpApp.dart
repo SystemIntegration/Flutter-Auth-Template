@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:login_register_demo/SignIn.dart';
 import 'package:login_register_demo/WelcomeScreen.dart';
 
 class SignUpApp extends StatelessWidget {
@@ -11,11 +12,12 @@ class SignUpApp extends StatelessWidget {
       routes: {
         '/': (context) => const SignUpScreen(),
         '/welcome': (context) => const WelcomeScreen(),
+        '/loginScreen': (context) => const SignIn(),
+
       },
     );
   }
 }
-
 
 class SignUpScreen extends StatelessWidget {
   const SignUpScreen();
@@ -36,7 +38,6 @@ class SignUpScreen extends StatelessWidget {
   }
 }
 
-
 class SignUpForm extends StatefulWidget {
   const SignUpForm();
 
@@ -50,8 +51,6 @@ class _SignUpFormState extends State<SignUpForm> {
   final _userNameTextContoller = TextEditingController();
   final _emailTextContoller = TextEditingController();
   final _addressContoller = TextEditingController();
-
-
 
   double _formProgress = 0;
 
@@ -118,15 +117,15 @@ class _SignUpFormState extends State<SignUpForm> {
                 controller: _emailTextContoller,
                 decoration: const InputDecoration(hintText: 'Email'),
               ),
-              ),
-            
-           Padding(
+            ),
+
+            Padding(
               padding: const EdgeInsets.all(8.0),
               child: TextFormField(
                 controller: _addressContoller,
                 decoration: const InputDecoration(hintText: 'Address'),
               ),
-              ),
+            ),
             TextButton(
                 style: ButtonStyle(
                   foregroundColor: MaterialStateProperty.resolveWith(
@@ -143,7 +142,18 @@ class _SignUpFormState extends State<SignUpForm> {
                   }),
                 ),
                 onPressed: _formProgress == 1 ? _showWelcomeScreen : null,
-                child: const Text('Sign Up'))
+                child: const Text('Sign Up')),
+
+            TextButton(
+              onPressed: () {
+                //TODO FORGOT PASSWORD SCREEN GOES HERE
+                 Navigator.of(context).pushNamed('/loginScreen');
+              },
+              child: Text(
+                'Already have an account? Sign in',
+                style: TextStyle(color: Colors.blue, fontSize: 15),
+              ),
+            ),
           ],
         )));
   }
@@ -225,7 +235,7 @@ class _AnimatedProgressIndicatorState extends State<AnimatedProgressIndicator>
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
- final String title;
+  final String title;
 
   @override
   State<MyHomePage> createState() => _MyHomePageState();
@@ -236,21 +246,19 @@ class _MyHomePageState extends State<MyHomePage> {
 
   void _incrementCounter() {
     setState(() {
-    _counter++;
+      _counter++;
     });
   }
 
   @override
   Widget build(BuildContext context) {
-   
     return Scaffold(
       appBar: AppBar(
-         title: Text(widget.title),
+        title: Text(widget.title),
       ),
       body: Center(
-     
         child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
               'You have pushed the button this many times:',

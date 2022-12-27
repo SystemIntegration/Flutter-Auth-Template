@@ -13,12 +13,18 @@ class WelcomeScreen extends StatelessWidget {
           onPressed: () {
             Navigator.pop(context);
           },
-          icon: Icon(Icons.home_outlined),
+          icon: Icon(Icons.arrow_back_ios),
         ),
         title: Text(
           "Second Page",
           style: TextStyle(color: Colors.white),
         ),
+      shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.only(
+              bottomRight: Radius.circular(25),
+              bottomLeft: Radius.circular(25)),
+        ),
+        elevation: 0.00,
       ),
      
       body: Center(
