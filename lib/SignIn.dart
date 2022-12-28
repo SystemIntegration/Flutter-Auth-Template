@@ -6,7 +6,7 @@ void main() {
 }
 
 class SignIn extends StatelessWidget {
-    const SignIn();
+  const SignIn();
 
   @override
   Widget build(BuildContext context) {
@@ -34,17 +34,20 @@ class _LoginDemoState extends State<LoginDemo> {
         child: Column(
           children: <Widget>[
             Padding(
-              padding: const EdgeInsets.only(top: 60.0),
+              padding: const EdgeInsets.only(top: 60.0, bottom: 10),
               child: Center(
                 child: Container(
-                    width: 200,
-                    height: 150,
-                    /*decoration: BoxDecoration(
+                  width: 180,
+                  height: 130,
+                 
+                  /*decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(50.0)),*/
-                    child: Image.asset('assets/images/si_logo.jpg')
-                    ),
-
+                  child: Image.asset('assets/images/silogo.jpeg', scale: 1, width: 180,
+                  height: 130,),
+                  
+                ),
+                
               ),
             ),
             Padding(
@@ -62,7 +65,6 @@ class _LoginDemoState extends State<LoginDemo> {
                   left: 15.0, right: 15.0, top: 15, bottom: 0),
               //padding: EdgeInsets.symmetric(horizontal: 15),
               child: TextField(
-
                 obscureText: true,
                 decoration: InputDecoration(
                     border: OutlineInputBorder(),
@@ -71,7 +73,7 @@ class _LoginDemoState extends State<LoginDemo> {
               ),
             ),
             TextButton(
-              onPressed: (){
+              onPressed: () {
                 //TODO FORGOT PASSWORD SCREEN GOES HERE
               },
               child: Text(
