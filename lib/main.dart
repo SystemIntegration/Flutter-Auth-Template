@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:login_register_demo/SignUpApp.dart';
 import 'package:login_register_demo/WelcomeScreen.dart';
+import 'package:login_register_demo/components/login_page.dart';
 
 void main() {
-  // runApp(const MyApp());
-  runApp(const SignUpApp());
+  runApp(const MyAppNew()); // New Login Register
+  //runApp(const SignUpApp()); // Old Login Register
 }
 
 // class MyApp extends StatelessWidget {
@@ -31,6 +32,20 @@ void main() {
 //     );
 //   }
 // }
+
+// 
+class MyAppNew extends StatelessWidget {
+  const MyAppNew({Key? key}) : super(key: key);
+
+  // This widget is the root of your application.
+  @override
+  Widget build(BuildContext context) {
+    return const MaterialApp(
+        debugShowCheckedModeBanner: false,
+        home: LoginPage(),
+    );
+  }
+}
 
 // class SignUpApp extends StatelessWidget {
 //   const SignUpApp();
