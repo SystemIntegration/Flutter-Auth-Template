@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:login_register_demo/SignUpApp.dart';
 import 'HomePage.dart';
 
 void main() {
@@ -39,15 +40,17 @@ class _LoginDemoState extends State<LoginDemo> {
                 child: Container(
                   width: 180,
                   height: 130,
-                 
+
                   /*decoration: BoxDecoration(
                         color: Colors.red,
                         borderRadius: BorderRadius.circular(50.0)),*/
-                  child: Image.asset('assets/images/silogo.jpeg', scale: 1, width: 180,
-                  height: 130,),
-                  
+                  child: Image.asset(
+                    'assets/images/silogo.jpeg',
+                    scale: 1,
+                    width: 180,
+                    height: 130,
+                  ),
                 ),
-                
               ),
             ),
             Padding(
@@ -100,7 +103,13 @@ class _LoginDemoState extends State<LoginDemo> {
             SizedBox(
               height: 130,
             ),
-            Text('New User? Create Account')
+            TextButton(
+              onPressed: () {
+                Navigator.push(
+                    context, MaterialPageRoute(builder: (_) => SignUpApp()));
+              },
+              child: Text('New User? Create Account'),
+            )
           ],
         ),
       ),
