@@ -55,7 +55,7 @@ class _SignupPageState extends State<SignupPage> {
             key: _signupFormKey,
             child: Column(
               children: [
-                const PageHeader(),
+                // const PageHeader(),
                 Container(
                   margin: const EdgeInsets.only(top: 10.0),
                   decoration: const BoxDecoration(
