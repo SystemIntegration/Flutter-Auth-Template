@@ -18,6 +18,10 @@ import 'package:login_register_demo/components/common/page_heading.dart';
 import 'package:login_register_demo/components/forget_password_page.dart';
 import 'package:login_register_demo/components/signup_page.dart';
 
+const users = const {
+  'admin': 'admin',
+};
+
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
 
@@ -27,6 +31,13 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   //
+  final _emailTextContoller = EditableText;
+  final _passwordTextContoller = EditableText;
+   final TextEditingController _controllerEmail = TextEditingController();
+      final TextEditingController _controllerPass = TextEditingController();
+
+  
+
   final _loginFormKey = GlobalKey<FormState>();
 
   @override
@@ -58,11 +69,13 @@ class _LoginPageState extends State<LoginPage> {
                         CustomInputField(
                             labelText: 'Email',
                             hintText: 'Your email id',
-                            validator: (textValue) {
-                              if (textValue == null || textValue.isEmpty) {
-                                return 'Email is required!';
+                            validator: (_emailTextContoller) {
+                              if (_emailTextContoller == null ||
+                                  _emailTextContoller.isEmpty) {
+                                return 'Email is requireddddd!';
                               }
-                              if (!EmailValidator.validate(textValue)) {
+                              if (!EmailValidator.validate(
+                                  _emailTextContoller)) {
                                 return 'Please enter a valid email';
                               }
                               return null;
@@ -75,9 +88,10 @@ class _LoginPageState extends State<LoginPage> {
                           hintText: 'Your password',
                           obscureText: true,
                           suffixIcon: true,
-                          validator: (textValue) {
-                            if (textValue == null || textValue.isEmpty) {
-                              return 'Password is required!';
+                          validator: (_passwordTextContoller) {
+                            if (_passwordTextContoller == null ||
+                                _passwordTextContoller.isEmpty) {
+                              return 'Password is requiredtttt!';
                             }
                             return null;
                           },
@@ -165,9 +179,37 @@ class _LoginPageState extends State<LoginPage> {
   void _handleLoginUser() {
     // login user
     if (_loginFormKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Submitting data..')),
-      );
+      if (_emailTextContoller == "admin@gmail.com" && _passwordTextContoller == "admin") {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Submitting data..')),
+        );
+      }else{
+           ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('enter valid userId and Pass data..')),
+        );
+      }
     }
+    return null;
   }
+
+// String ss() {
+
+//     if (_emailTextContoller == "admin") {
+//       return "";
+//     }else{
+//       return "invalida admin";
+//     }
+//     if (_passwordTextContoller =="admin") {
+//       return "";
+//         }else{
+//       return "invalidare admin";
+
+//     }
+
+//      ScaffoldMessenger.of(context).showSnackBar(
+//         const SnackBar(content: Text('Submitting data..')),
+//       );
+//     return "sucesess";
+//   }
+
 }
