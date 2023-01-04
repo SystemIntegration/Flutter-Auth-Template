@@ -193,26 +193,43 @@ class _LoginPageState extends State<LoginPage> {
       print("Passvalidator----++++$_passwordTextContoller");
 
       //log("Emailvalidator----++++$_emailTextContoller");
-      if (_emailTextContoller.text == "admin@gmail.com" &&
+    //   if (_emailTextContoller.text == "admin@gmail.com" &&
+    //       _passwordTextContoller.text == "admin") {
+    //     ScaffoldMessenger.of(context).showSnackBar(
+    //       const SnackBar(content: Text('Submitting data..')),
+    //     );
+    //     // ss();
+    //     Navigator.push(
+    //         context, MaterialPageRoute(builder: (_) => HomeScreen()));
+    //   }
+    //   //return null;
+    // } else {
+    //   ScaffoldMessenger.of(context).showSnackBar(
+    //     const SnackBar(content: Text('enter valid userId and Pass data..')),
+    //   );
+    //  // return null;
+    // }
+    //return null;
+  }
+    if (_emailTextContoller.text == "admin@gmail.com" &&
           _passwordTextContoller.text == "admin") {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Submitting data..')),
-        );
+        // ScaffoldMessenger.of(context).showSnackBar(
+        //   const SnackBar(content: Text('Submitting data..')),
+        // );
         // ss();
         Navigator.push(
             context, MaterialPageRoute(builder: (_) => HomeScreen()));
       }
       //return null;
-    } else {
+    else {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('enter valid userId and Pass data..')),
       );
      // return null;
     }
-    return null;
-  }
 
   //return null;
+}
 }
 
 
