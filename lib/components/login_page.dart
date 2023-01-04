@@ -218,7 +218,7 @@ class _LoginPageState extends State<LoginPage> {
         // );
         // ss();
         Navigator.push(
-            context, MaterialPageRoute(builder: (_) => HomeScreen()));
+            context, MaterialPageRoute(builder: (_) => HomeScreen(name: _emailTextContoller.text,)));
       }
       //return null;
     else {

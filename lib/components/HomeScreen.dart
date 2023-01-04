@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 
 class HomeScreen extends StatefulWidget {
+   String name;
+     HomeScreen({Key? key,required this.name}) : super(key: key);
+
   @override
   _HomeScreenState createState() => _HomeScreenState();
 }
@@ -19,7 +22,7 @@ class _HomeScreenState extends State<HomeScreen> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Container(
-                height: 80,
+                height: 60,
                 width: 150,
                 decoration: BoxDecoration(
                     color: Colors.blue,
@@ -37,7 +40,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                   padding: EdgeInsets.all(8.0),
                   child:
-                      Text("admin@gmail.com", style: TextStyle(fontSize: 20)))
+                      Text('UserName :${widget.name}', style: TextStyle(fontSize: 20)))
             ],
           ),
         ));
