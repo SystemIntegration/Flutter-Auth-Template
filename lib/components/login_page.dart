@@ -8,9 +8,13 @@
 
 // import 'package:login_signup/components/common/custom_form_button.dart';
 
+import 'dart:developer';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:login_register_demo/SignIn.dart';
+import 'package:login_register_demo/components/HomeScreen.dart';
 import 'package:login_register_demo/components/common/custom_form_button.dart';
 import 'package:login_register_demo/components/common/custom_input_field.dart';
 import 'package:login_register_demo/components/common/page_header.dart';
@@ -18,9 +22,9 @@ import 'package:login_register_demo/components/common/page_heading.dart';
 import 'package:login_register_demo/components/forget_password_page.dart';
 import 'package:login_register_demo/components/signup_page.dart';
 
-const users = const {
-  'admin': 'admin',
-};
+// const users = const {
+//   'admin': 'admin',
+// };
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -31,12 +35,10 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   //
-  final _emailTextContoller = EditableText;
-  final _passwordTextContoller = EditableText;
-   final TextEditingController _controllerEmail = TextEditingController();
-      final TextEditingController _controllerPass = TextEditingController();
-
-  
+  //final _emailTextContoller = TextEditingController();
+  //final _passwordTextContoller = TextEditingController();
+  final TextEditingController _emailTextContoller = TextEditingController();
+  final TextEditingController _passwordTextContoller = TextEditingController();
 
   final _loginFormKey = GlobalKey<FormState>();
 
@@ -66,36 +68,44 @@ class _LoginPageState extends State<LoginPage> {
                         const PageHeading(
                           title: 'Log-in',
                         ),
-                        CustomInputField(
-                            labelText: 'Email',
-                            hintText: 'Your email id',
-                            validator: (_emailTextContoller) {
-                              if (_emailTextContoller == null ||
-                                  _emailTextContoller.isEmpty) {
-                                return 'Email is requireddddd!';
-                              }
-                              if (!EmailValidator.validate(
-                                  _emailTextContoller)) {
-                                return 'Please enter a valid email';
-                              }
-                              return null;
-                            }),
+                        Container(
+                            width: size.width * 0.80,
+                            child: (TextFormField(
+                              decoration: InputDecoration(
+                                labelText: "Email",
+                              ),
+                              controller: _emailTextContoller,
+                              validator: (_emailTextContoller) {
+                                if (_emailTextContoller == null ||
+                                    _emailTextContoller.isEmpty) {
+                                  return 'Email is required!';
+                                }
+                                if (!EmailValidator.validate(
+                                    _emailTextContoller)) {
+                                  return 'Please enter a valid email';
+                                }
+                                return null;
+                              },
+                            ))),
                         const SizedBox(
                           height: 16,
                         ),
-                        CustomInputField(
-                          labelText: 'Password',
-                          hintText: 'Your password',
-                          obscureText: true,
-                          suffixIcon: true,
-                          validator: (_passwordTextContoller) {
-                            if (_passwordTextContoller == null ||
-                                _passwordTextContoller.isEmpty) {
-                              return 'Password is requiredtttt!';
-                            }
-                            return null;
-                          },
-                        ),
+                        Container(
+                            width: size.width * 0.80,
+                            child: (TextFormField(
+                              decoration: InputDecoration(
+                                labelText: "Password",
+                              ),
+                              obscureText: true,
+                              controller: _passwordTextContoller,
+                              validator: (_passwordTextContoller) {
+                                if (_passwordTextContoller == null ||
+                                    _passwordTextContoller.isEmpty) {
+                                  return 'Password is required';
+                                }
+                                return null;
+                              },
+                            ))),
                         const SizedBox(
                           height: 16,
                         ),
@@ -179,18 +189,42 @@ class _LoginPageState extends State<LoginPage> {
   void _handleLoginUser() {
     // login user
     if (_loginFormKey.currentState!.validate()) {
-      if (_emailTextContoller == "admin@gmail.com" && _passwordTextContoller == "admin") {
+      print("Emailvalidator----++++$_emailTextContoller");
+      print("Passvalidator----++++$_passwordTextContoller");
+
+      //log("Emailvalidator----++++$_emailTextContoller");
+      if (_emailTextContoller.text == "admin@gmail.com" &&
+          _passwordTextContoller.text == "admin") {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Submitting data..')),
         );
-      }else{
-           ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('enter valid userId and Pass data..')),
-        );
+        // ss();
+        Navigator.push(
+            context, MaterialPageRoute(builder: (_) => HomeScreen()));
       }
+      //return null;
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('enter valid userId and Pass data..')),
+      );
+     // return null;
     }
     return null;
   }
+
+  //return null;
+}
+
+
+// void ss() {
+//    Navigator.push(
+//                     context, MaterialPageRoute(builder: (_) => HomeScreen()));
+// }
+
+
+
+
+
 
 // String ss() {
 
@@ -212,4 +246,6 @@ class _LoginPageState extends State<LoginPage> {
 //     return "sucesess";
 //   }
 
-}
+
+
+
