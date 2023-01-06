@@ -24,9 +24,12 @@ class ForgetPasswordPage extends StatefulWidget {
 
 class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
   final _forgetPasswordFormKey = GlobalKey<FormState>();
+  final emailTextFieldController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
+        Size size = MediaQuery.of(context).size;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffEEF1F3),
@@ -50,19 +53,48 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
                         const PageHeading(
                           title: 'Forgot password',
                         ),
-                        CustomInputField(
-                            labelText: 'Email',
-                            hintText: 'Your email id',
-                            isDense: true,
-                            validator: (textValue) {
-                              if (textValue == null || textValue.isEmpty) {
-                                return 'Email is required!';
-                              }
-                              if (!EmailValidator.validate(textValue)) {
-                                return 'Please enter a valid email';
-                              }
-                              return null;
-                            }),
+                        // CustomInputField(
+                        //     labelText: 'Email',
+                        //     hintText: 'Your email id',
+                        //     isDense: true,
+                        //     validator: (textValue) {
+                        //       if (textValue == null || textValue.isEmpty) {
+                        //         return 'Email is required!';
+                        //       }
+                        //       if (!EmailValidator.validate(textValue)) {
+                        //         return 'Please enter a valid email';
+                        //       }
+                        //                 print('Emailvalue--------++++${textValue}');
+
+                        //       return null;
+                        //     }
+                        //     ),
+                       
+                          Container(
+                            width: size.width * 0.85,
+                            child:  TextFormField(
+                          
+                          controller: emailTextFieldController,
+                          style: const TextStyle(fontSize: 18),
+                          keyboardType: TextInputType.emailAddress,
+                          decoration: const InputDecoration(
+                            //border: OutlineInputBorder(),
+                            labelText: "Email",
+                           // prefixIcon: Icon(Icons.email),
+                            hintText: "Enter your email ID",
+                          ),
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'Can\'t be empty';
+                            }
+
+                            if (!EmailValidator.validate(text)) {
+                              return 'Please enter a valid email';
+                            }
+                            return null;
+                          },
+                        ),
+                          ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -111,5 +143,7 @@ class _ForgetPasswordPageState extends State<ForgetPasswordPage> {
         const SnackBar(content: Text('Submitting data..')),
       );
     }
+
+    print('Second text field: ${emailTextFieldController.text}');
   }
 }

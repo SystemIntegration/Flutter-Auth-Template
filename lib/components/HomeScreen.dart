@@ -16,6 +16,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
         appBar: AppBar(
           title: Text('Home Page'),
+           automaticallyImplyLeading: false,
         ),
         body: Center(
           child: Column(
@@ -40,7 +41,7 @@ class _HomeScreenState extends State<HomeScreen> {
               Padding(
                   padding: EdgeInsets.all(8.0),
                   child:
-                      Text('UserName :${widget.name}', style: TextStyle(fontSize: 20)))
+                      Text('Hello :${widget.name}', style: TextStyle(fontSize: 20)))
             ],
           ),
         ));
