@@ -1,4 +1,4 @@
-package com.example.login_register_demo
+package com.bmv.authpoc
 
 import io.flutter.embedding.android.FlutterActivity
 
