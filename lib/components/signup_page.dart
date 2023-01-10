@@ -29,6 +29,10 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final TextEditingController _nameTextContoller = TextEditingController();
+  final TextEditingController _emailTextContoller = TextEditingController();
+  final TextEditingController _passwordTextContoller = TextEditingController();
+
   File? _profileImage;
 
   final _signupFormKey = GlobalKey<FormState>();
@@ -47,6 +51,8 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffEEF1F3),
@@ -108,64 +114,122 @@ class _SignupPageState extends State<SignupPage> {
                       const SizedBox(
                         height: 16,
                       ),
-                      CustomInputField(
-                          labelText: 'Name',
-                          hintText: 'Your name',
-                          isDense: true,
-                          validator: (textValue) {
-                            if (textValue == null || textValue.isEmpty) {
-                              return 'Name field is required!';
-                            }
-                            return null;
-                          }),
+                      // CustomInputField(
+                      //     labelText: 'Name',
+                      //     hintText: 'Your name',
+                      //     isDense: true,
+                      //     validator: (textValue) {
+                      //       if (textValue == null || textValue.isEmpty) {
+                      //         return 'Name field is required!';
+                      //       }
+                      //       return null;
+                      //     }),
+
+                      Container(
+                          width: size.width * 0.80,
+                          child: (TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Name",
+                            ),
+                            controller: _nameTextContoller,
+                            validator: (_nameTextContoller) {
+                              if (_nameTextContoller == null ||
+                                  _nameTextContoller.isEmpty) {
+                                return 'name is required!';
+                              }
+                              
+                              return null;
+                            },
+                          ))),
                       const SizedBox(
                         height: 16,
                       ),
-                      CustomInputField(
-                          labelText: 'Email',
-                          hintText: 'Your email id',
-                          isDense: true,
-                          validator: (textValue) {
-                            if (textValue == null || textValue.isEmpty) {
-                              return 'Email is required!';
-                            }
-                            if (!EmailValidator.validate(textValue)) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          }),
+                      // CustomInputField(
+                      //     labelText: 'Email',
+                      //     hintText: 'Your email id',
+                      //     isDense: true,
+                      //     validator: (textValue) {
+                      //       if (textValue == null || textValue.isEmpty) {
+                      //         return 'Email is required!';
+                      //       }
+                      //       if (!EmailValidator.validate(textValue)) {
+                      //         return 'Please enter a valid email';
+                      //       }
+                      //       return null;
+                      //     }),
+
+                       Container(
+                            width: size.width * 0.80,
+                            child: (TextFormField(
+                              decoration: InputDecoration(
+                                labelText: "Email",
+                              ),
+                              controller: _emailTextContoller,
+                              validator: (_emailTextContoller) {
+                                if (_emailTextContoller == null ||
+                                    _emailTextContoller.isEmpty) {
+                                  return 'Email is required!';
+                                }
+                                if (!EmailValidator.validate(
+                                    _emailTextContoller)) {
+                                  return 'Please enter a valid email';
+                                }
+                                return null;
+                              },
+                            ))),
+                      // const SizedBox(
+                      //   height: 16,
+                      // ),
+                      // CustomInputField(
+                      //     labelText: 'Contact no.',
+                      //     hintText: 'Your contact number',
+                      //     isDense: true,
+                      //     validator: (textValue) {
+                      //       if (textValue == null || textValue.isEmpty) {
+                      //         return 'Contact number is required!';
+                      //       }
+                      //       return null;
+                      //     }),
                       const SizedBox(
                         height: 16,
                       ),
-                      CustomInputField(
-                          labelText: 'Contact no.',
-                          hintText: 'Your contact number',
-                          isDense: true,
-                          validator: (textValue) {
-                            if (textValue == null || textValue.isEmpty) {
-                              return 'Contact number is required!';
-                            }
-                            return null;
-                          }),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      CustomInputField(
-                        labelText: 'Password',
-                        hintText: 'Your password',
-                        isDense: true,
-                        obscureText: true,
-                        validator: (textValue) {
-                          if (textValue == null || textValue.isEmpty) {
-                            return 'Password is required!';
-                          }
-                          return null;
-                        },
-                        suffixIcon: true,
-                      ),
+                      // CustomInputField(
+                      //   labelText: 'Password',
+                      //   hintText: 'Your password',
+                      //   isDense: true,
+                      //   obscureText: true,
+                      //   validator: (textValue) {
+                      //     if (textValue == null || textValue.isEmpty) {
+                      //       return 'Password is required!';
+                      //     }
+                      //     return null;
+                      //   },
+                      //   suffixIcon: true,
+                      // ),
+
+                      Container(
+                            width: size.width * 0.80,
+                            child: (TextFormField(
+                              decoration: InputDecoration(
+                                labelText: "Password",
+                              ),
+                              obscureText: true,
+                              controller: _passwordTextContoller,
+                              validator: (_passwordTextContoller) {
+                                if (_passwordTextContoller == null ||
+                                    _passwordTextContoller.isEmpty) {
+                                  return 'Password is required';
+                                }
+                                return null;
+                              },
+                            ))),
                       const SizedBox(
                         height: 22,
                       ),
+                      // CustomFormButton(
+                      //   innerText: 'Signup',
+                      //   onPressed: _handleSignupUser,
+                      // ),
                       CustomFormButton(
                         innerText: 'Signup',
                         onPressed: _handleSignupUser,
