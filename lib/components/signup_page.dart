@@ -11,10 +11,13 @@
 // import 'package:login_signup/components/common/custom_input_field.dart';
 
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:login_register_demo/components/HomeScreen.dart';
 import 'package:login_register_demo/components/common/custom_form_button.dart';
 import 'package:login_register_demo/components/common/custom_input_field.dart';
 import 'package:login_register_demo/components/common/page_header.dart';
@@ -137,7 +140,7 @@ class _SignupPageState extends State<SignupPage> {
                                   _nameTextContoller.isEmpty) {
                                 return 'name is required!';
                               }
-                              
+
                               return null;
                             },
                           ))),
@@ -158,25 +161,25 @@ class _SignupPageState extends State<SignupPage> {
                       //       return null;
                       //     }),
 
-                       Container(
-                            width: size.width * 0.80,
-                            child: (TextFormField(
-                              decoration: InputDecoration(
-                                labelText: "Email",
-                              ),
-                              controller: _emailTextContoller,
-                              validator: (_emailTextContoller) {
-                                if (_emailTextContoller == null ||
-                                    _emailTextContoller.isEmpty) {
-                                  return 'Email is required!';
-                                }
-                                if (!EmailValidator.validate(
-                                    _emailTextContoller)) {
-                                  return 'Please enter a valid email';
-                                }
-                                return null;
-                              },
-                            ))),
+                      Container(
+                          width: size.width * 0.80,
+                          child: (TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Email",
+                            ),
+                            controller: _emailTextContoller,
+                            validator: (_emailTextContoller) {
+                              if (_emailTextContoller == null ||
+                                  _emailTextContoller.isEmpty) {
+                                return 'Email is required!';
+                              }
+                              if (!EmailValidator.validate(
+                                  _emailTextContoller)) {
+                                return 'Please enter a valid email';
+                              }
+                              return null;
+                            },
+                          ))),
                       // const SizedBox(
                       //   height: 16,
                       // ),
@@ -208,21 +211,21 @@ class _SignupPageState extends State<SignupPage> {
                       // ),
 
                       Container(
-                            width: size.width * 0.80,
-                            child: (TextFormField(
-                              decoration: InputDecoration(
-                                labelText: "Password",
-                              ),
-                              obscureText: true,
-                              controller: _passwordTextContoller,
-                              validator: (_passwordTextContoller) {
-                                if (_passwordTextContoller == null ||
-                                    _passwordTextContoller.isEmpty) {
-                                  return 'Password is required';
-                                }
-                                return null;
-                              },
-                            ))),
+                          width: size.width * 0.80,
+                          child: (TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Password",
+                            ),
+                            obscureText: true,
+                            controller: _passwordTextContoller,
+                            validator: (_passwordTextContoller) {
+                              if (_passwordTextContoller == null ||
+                                  _passwordTextContoller.isEmpty) {
+                                return 'Password is required';
+                              }
+                              return null;
+                            },
+                          ))),
                       const SizedBox(
                         height: 22,
                       ),
@@ -288,6 +291,49 @@ class _SignupPageState extends State<SignupPage> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Submitting data..')),
       );
+    }
+    register();
+  }
+
+  void register() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    final String name = _nameTextContoller.text;
+    final String email = _emailTextContoller.text;
+    final String password = _passwordTextContoller.text;
+    try {
+      final UserCredential userCredential = await auth
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      await db
+          .collection("Users")
+          .doc(userCredential.user!.uid)
+          .set({"Name": name, "Email": email});
+
+      // ignore: use_build_context_synchronously
+      // Navigator.pushReplacement(
+      //   context,
+      //   MaterialPageRoute(
+      //     builder: (context) => const Home(),
+      //   ),
+      // );
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) => HomeScreen(
+                    name: email,
+                  )));
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Password Provided is too Weak')),
+        );
+      } else if (e.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Account Already exists')),
+        );
+      }
     }
   }
 }
