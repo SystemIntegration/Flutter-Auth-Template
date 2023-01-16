@@ -1,16 +1,33 @@
-# login_register_demo
 
-A new Flutter project.
+# Authentication Demo
 
-## Getting Started
+-> This Authentication Project in we are included below module
+    1.Login Screen
+    2.Register screen
+    3.ForgotPassword Screen
+    4.Home Screen 
 
-This project is a starting point for a Flutter application.
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Installation
+  
+  Two way to Flutter Installation
+  way1 : Using Android Studio
+     - Install Flutter Plugin
+     - Install Flutter Sdk
+  
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+  way 2: Using Vs Code
+    - Install Android Studio
+    - Install Flutter manually
+    - Install Flutter sdk
+
+       
+     
+## Deployment
+  - Goto Repository and clone project
+  - goto  project directory and add "flutter pub get" command for sync library
+  - goto  project direcatdirectoryory and add "flutter run" to run project
+  - if you want to run in web(use this command "flutter run -d chrome")
+
+ 
