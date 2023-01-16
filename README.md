@@ -1,33 +1,27 @@
 
-# Authentication Demo
-
--> This Authentication Project in we are included below module
-    1.Login Screen
-    2.Register screen
-    3.ForgotPassword Screen
-    4.Home Screen 
-
-
+# Flutter-Auth-Template
+```sh
+ We had created template project for default authentication to start with. 
+```
+- Login Screen
+- Register screen
+- ForgotPassword Screen
+- Home Screen 
 
 ## Installation
-  
-  Two way to Flutter Installation
-  way1 : Using Android Studio
+  There are two way to setup Flutter app
+  - Using Android Studio
      - Install Flutter Plugin
      - Install Flutter Sdk
-  
+  -  Using VsCode
+     - Install Android Studio
+     - Install Flutter manually
+     - Install Flutter sdk
 
-  way 2: Using Vs Code
-    - Install Android Studio
-    - Install Flutter manually
-    - Install Flutter sdk
-
-       
-     
 ## Deployment
-  - Goto Repository and clone project
-  - goto  project directory and add "flutter pub get" command for sync library
-  - goto  project direcatdirectoryory and add "flutter run" to run project
-  - if you want to run in web(use this command "flutter run -d chrome")
+  - Go to Repository and clone project
+  - Go to  project directory and run "flutter pub get" command to sync library
+  - Go to  project directory and run "flutter run" command to run the project.
+  - If you want to run in web(use this command "flutter run -d chrome")
 
  
