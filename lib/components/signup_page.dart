@@ -27,7 +27,7 @@ class _SignupPageState extends State<SignupPage> {
   File? _profileImage;
   final _signupFormKey = GlobalKey<FormState>();
 
-   @override
+  @override
   void dispose() {
     super.dispose();
     _nameTextContoller.dispose();
@@ -258,16 +258,10 @@ class _SignupPageState extends State<SignupPage> {
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
-         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Register Successfully please go to Login screen and try to login')),
-        );
-
-      //   Navigator.pushReplacement(
-      //   context,
-      //   MaterialPageRoute(
-      //     builder: (context) => const HomeScreen(),
-      //   ),
+      //  ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text('Register Successfully please go to Login screen and try to login')),
       // );
+
     } on FirebaseAuthException catch (e) {
       if (e.code == 'weak-password') {
         ScaffoldMessenger.of(context).showSnackBar(

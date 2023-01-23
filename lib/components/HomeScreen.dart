@@ -11,9 +11,18 @@ class HomeScreen extends StatefulWidget {
   _HomeScreenState createState() => _HomeScreenState();
 }
 
+
 class _HomeScreenState extends State<HomeScreen> {
   final textFieldValueHolder = TextEditingController();
   final user = FirebaseAuth.instance.currentUser!;
+
+   final FirebaseAuth auth = FirebaseAuth.instance;
+  //signout function
+  signOut() async {
+    await auth.signOut();
+    Navigator.pushReplacement(
+        context, MaterialPageRoute(builder: (context) => LoginPage()));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,7 +43,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     borderRadius: BorderRadius.circular(10)),
                 child: TextButton(
                   onPressed: () {
-                    FirebaseAuth.instance.signOut();
+                  // FirebaseAuth.instance.signOut(); //OE
+                  signOut(); //temp
                     //Navigator.pop(context);
                        MaterialPageRoute(builder: (context) => LoginPage());
                   },
