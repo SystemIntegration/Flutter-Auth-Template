@@ -8,12 +8,11 @@ import 'package:login_register_demo/SignIn.dart';
 import 'package:login_register_demo/components/HomeScreen.dart';
 import 'package:login_register_demo/components/common/custom_form_button.dart';
 import 'package:login_register_demo/components/common/custom_input_field.dart';
+import 'package:login_register_demo/components/common/loading_dialog.dart';
 import 'package:login_register_demo/components/common/page_header.dart';
 import 'package:login_register_demo/components/common/page_heading.dart';
 import 'package:login_register_demo/components/forget_password_page.dart';
 import 'package:login_register_demo/components/signup_page.dart';
-
-
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -23,7 +22,6 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-
   final TextEditingController _emailTextContoller = TextEditingController();
   final TextEditingController _passwordTextContoller = TextEditingController();
 
@@ -39,6 +37,7 @@ class _LoginPageState extends State<LoginPage> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffEEF1F3),
@@ -192,18 +191,20 @@ class _LoginPageState extends State<LoginPage> {
   void login() async {
     FirebaseAuth auth = FirebaseAuth.instance;
     FirebaseFirestore db = FirebaseFirestore.instance;
+    // showLoaderDialog(context);
+    Dialogs.showLoadingDialog(context);
     final String email = _emailTextContoller.text;
     final String password = _passwordTextContoller.text;
     try {
       final UserCredential userCredential = await auth
           .signInWithEmailAndPassword(email: email, password: password);
       await db.collection("Users").doc(userCredential.user!.uid).get();
-      // Navigator.of(context).pushReplacement(MaterialPageRoute(
-      //   builder: ((context) => const HomeScreen()),
-      // ));
+
+      Navigator.pop(context);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
     } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(

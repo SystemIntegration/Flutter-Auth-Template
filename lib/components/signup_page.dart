@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:login_register_demo/components/HomeScreen.dart';
 import 'package:login_register_demo/components/common/custom_form_button.dart';
 import 'package:login_register_demo/components/common/custom_input_field.dart';
+import 'package:login_register_demo/components/common/loading_dialog.dart';
 import 'package:login_register_demo/components/common/page_header.dart';
 import 'package:login_register_demo/components/common/page_heading.dart';
 import 'package:login_register_demo/components/login_page.dart';
@@ -236,8 +237,9 @@ class _SignupPageState extends State<SignupPage> {
 
   void register() async {
     FirebaseAuth auth = FirebaseAuth.instance;
-
     FirebaseFirestore db = FirebaseFirestore.instance;
+    Dialogs.showLoadingDialog(context);
+
     final String name = _nameTextContoller.text;
     final String email = _emailTextContoller.text;
     final String password = _passwordTextContoller.text;
@@ -252,9 +254,7 @@ class _SignupPageState extends State<SignupPage> {
           .doc(userCredential.user!.uid)
           .set({"Name": name, "Email": email});
       //print("FireBase db----++++$db");
-
-      //const SnackBar(content: Text('login.....'));
-
+      Navigator.pop(context);
       Navigator.push(
           context, MaterialPageRoute(builder: (context) => HomeScreen()));
 
@@ -263,6 +263,7 @@ class _SignupPageState extends State<SignupPage> {
       // );
 
     } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
       if (e.code == 'weak-password') {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Password Provided is too Weak')),
