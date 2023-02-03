@@ -107,11 +107,16 @@ class _LoginPageState extends State<LoginPage> {
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
                             onTap: () => {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ForgetPasswordPage()))
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             const ForgetPasswordPage()))
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    backgroundColor: Colors.redAccent,
+                                    content: Text('Comming Soon...')),
+                              )
                             },
                             child: const Text(
                               'Forget password?',
