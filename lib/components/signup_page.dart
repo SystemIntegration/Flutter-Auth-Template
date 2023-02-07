@@ -1,22 +1,14 @@
-// import 'dart:io';
-// import 'package:email_validator/email_validator.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter/services.dart';
-// import 'package:image_picker/image_picker.dart';
-// import 'package:login_signup/components/common/page_header.dart';
-// import 'package:login_signup/components/common/page_heading.dart';
-// import 'package:login_signup/components/login_page.dart';
-
-// import 'package:login_signup/components/common/custom_form_button.dart';
-// import 'package:login_signup/components/common/custom_input_field.dart';
-
 import 'dart:io';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:login_register_demo/components/HomeScreen.dart';
 import 'package:login_register_demo/components/common/custom_form_button.dart';
 import 'package:login_register_demo/components/common/custom_input_field.dart';
+import 'package:login_register_demo/components/common/loading_dialog.dart';
 import 'package:login_register_demo/components/common/page_header.dart';
 import 'package:login_register_demo/components/common/page_heading.dart';
 import 'package:login_register_demo/components/login_page.dart';
@@ -29,9 +21,20 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
-  File? _profileImage;
+  final TextEditingController _nameTextContoller = TextEditingController();
+  final TextEditingController _emailTextContoller = TextEditingController();
+  final TextEditingController _passwordTextContoller = TextEditingController();
 
+  File? _profileImage;
   final _signupFormKey = GlobalKey<FormState>();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _nameTextContoller.dispose();
+    _emailTextContoller.dispose();
+    _passwordTextContoller.dispose();
+  }
 
   Future _pickProfileImage() async {
     try {
@@ -47,6 +50,8 @@ class _SignupPageState extends State<SignupPage> {
 
   @override
   Widget build(BuildContext context) {
+    Size size = MediaQuery.of(context).size;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffEEF1F3),
@@ -108,61 +113,63 @@ class _SignupPageState extends State<SignupPage> {
                       const SizedBox(
                         height: 16,
                       ),
-                      CustomInputField(
-                          labelText: 'Name',
-                          hintText: 'Your name',
-                          isDense: true,
-                          validator: (textValue) {
-                            if (textValue == null || textValue.isEmpty) {
-                              return 'Name field is required!';
-                            }
-                            return null;
-                          }),
+                      Container(
+                          width: size.width * 0.80,
+                          child: (TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Name",
+                            ),
+                            controller: _nameTextContoller,
+                            validator: (_nameTextContoller) {
+                              if (_nameTextContoller == null ||
+                                  _nameTextContoller.isEmpty) {
+                                return 'name is required!';
+                              }
+
+                              return null;
+                            },
+                          ))),
                       const SizedBox(
                         height: 16,
                       ),
-                      CustomInputField(
-                          labelText: 'Email',
-                          hintText: 'Your email id',
-                          isDense: true,
-                          validator: (textValue) {
-                            if (textValue == null || textValue.isEmpty) {
-                              return 'Email is required!';
-                            }
-                            if (!EmailValidator.validate(textValue)) {
-                              return 'Please enter a valid email';
-                            }
-                            return null;
-                          }),
+                      Container(
+                          width: size.width * 0.80,
+                          child: (TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Email",
+                            ),
+                            controller: _emailTextContoller,
+                            validator: (_emailTextContoller) {
+                              if (_emailTextContoller == null ||
+                                  _emailTextContoller.isEmpty) {
+                                return 'Email is required!';
+                              }
+                              if (!EmailValidator.validate(
+                                  _emailTextContoller)) {
+                                return 'Please enter a valid email';
+                              }
+                              return null;
+                            },
+                          ))),
                       const SizedBox(
                         height: 16,
                       ),
-                      CustomInputField(
-                          labelText: 'Contact no.',
-                          hintText: 'Your contact number',
-                          isDense: true,
-                          validator: (textValue) {
-                            if (textValue == null || textValue.isEmpty) {
-                              return 'Contact number is required!';
-                            }
-                            return null;
-                          }),
-                      const SizedBox(
-                        height: 16,
-                      ),
-                      CustomInputField(
-                        labelText: 'Password',
-                        hintText: 'Your password',
-                        isDense: true,
-                        obscureText: true,
-                        validator: (textValue) {
-                          if (textValue == null || textValue.isEmpty) {
-                            return 'Password is required!';
-                          }
-                          return null;
-                        },
-                        suffixIcon: true,
-                      ),
+                      Container(
+                          width: size.width * 0.80,
+                          child: (TextFormField(
+                            decoration: InputDecoration(
+                              labelText: "Password",
+                            ),
+                            obscureText: true,
+                            controller: _passwordTextContoller,
+                            validator: (_passwordTextContoller) {
+                              if (_passwordTextContoller == null ||
+                                  _passwordTextContoller.isEmpty) {
+                                return 'Password is required';
+                              }
+                              return null;
+                            },
+                          ))),
                       const SizedBox(
                         height: 22,
                       ),
@@ -221,9 +228,51 @@ class _SignupPageState extends State<SignupPage> {
   void _handleSignupUser() {
     // signup user
     if (_signupFormKey.currentState!.validate()) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Submitting data..')),
-      );
+      // ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text('Submitting data..')),
+      // );
+    }
+    register();
+  }
+
+  void register() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    Dialogs.showLoadingDialog(context);
+
+    final String name = _nameTextContoller.text;
+    final String email = _emailTextContoller.text;
+    final String password = _passwordTextContoller.text;
+    print("FireBase name----++++$name");
+
+    try {
+      final UserCredential userCredential = await auth
+          .createUserWithEmailAndPassword(email: email, password: password);
+
+      await db
+          .collection("Users")
+          .doc(userCredential.user!.uid)
+          .set({"Name": name, "Email": email});
+      //print("FireBase db----++++$db");
+      Navigator.pop(context);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+
+      //  ScaffoldMessenger.of(context).showSnackBar(
+      //   const SnackBar(content: Text('Register Successfully please go to Login screen and try to login')),
+      // );
+
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      if (e.code == 'weak-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Password Provided is too Weak')),
+        );
+      } else if (e.code == 'email-already-in-use') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Account Already exists')),
+        );
+      }
     }
   }
 }

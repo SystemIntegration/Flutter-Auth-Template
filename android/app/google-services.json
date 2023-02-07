@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "426952630671",
+    "project_id": "flutterauthpoc",
+    "storage_bucket": "flutterauthpoc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:426952630671:android:9096b089b5e51e2aa32bfa",
+        "android_client_info": {
+          "package_name": "com.bmv.authpoc"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "426952630671-33odvjnent6hj2en1rc6848pcjc75cjo.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9hat30skz8Jl7Bvlc0-EeknQB9MONHKo"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "426952630671-33odvjnent6hj2en1rc6848pcjc75cjo.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

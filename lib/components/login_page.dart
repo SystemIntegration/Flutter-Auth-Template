@@ -1,30 +1,18 @@
-// import 'package:flutter/material.dart';
-// import 'package:login_signup/components/common/custom_input_field.dart';
-// import 'package:login_signup/components/common/page_header.dart';
-// import 'package:login_signup/components/forget_password_page.dart';
-// import 'package:login_signup/components/signup_page.dart';
-// import 'package:email_validator/email_validator.dart';
-// import 'package:login_signup/components/common/page_heading.dart';
-
-// import 'package:login_signup/components/common/custom_form_button.dart';
-
 import 'dart:developer';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:login_register_demo/SignIn.dart';
 import 'package:login_register_demo/components/HomeScreen.dart';
 import 'package:login_register_demo/components/common/custom_form_button.dart';
 import 'package:login_register_demo/components/common/custom_input_field.dart';
+import 'package:login_register_demo/components/common/loading_dialog.dart';
 import 'package:login_register_demo/components/common/page_header.dart';
 import 'package:login_register_demo/components/common/page_heading.dart';
 import 'package:login_register_demo/components/forget_password_page.dart';
 import 'package:login_register_demo/components/signup_page.dart';
-
-// const users = const {
-//   'admin': 'admin',
-// };
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);
@@ -34,17 +22,22 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  //
-  //final _emailTextContoller = TextEditingController();
-  //final _passwordTextContoller = TextEditingController();
   final TextEditingController _emailTextContoller = TextEditingController();
   final TextEditingController _passwordTextContoller = TextEditingController();
 
   final _loginFormKey = GlobalKey<FormState>();
 
   @override
+  void dispose() {
+    super.dispose();
+    _emailTextContoller.dispose();
+    _passwordTextContoller.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: const Color(0xffEEF1F3),
@@ -114,11 +107,16 @@ class _LoginPageState extends State<LoginPage> {
                           alignment: Alignment.centerRight,
                           child: GestureDetector(
                             onTap: () => {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const ForgetPasswordPage()))
+                              // Navigator.push(
+                              //     context,
+                              //     MaterialPageRoute(
+                              //         builder: (context) =>
+                              //             const ForgetPasswordPage()))
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                    backgroundColor: Colors.redAccent,
+                                    content: Text('Comming Soon...')),
+                              )
                             },
                             child: const Text(
                               'Forget password?',
@@ -191,78 +189,40 @@ class _LoginPageState extends State<LoginPage> {
     if (_loginFormKey.currentState!.validate()) {
       print("Emailvalidator----++++$_emailTextContoller");
       print("Passvalidator----++++$_passwordTextContoller");
-
-      //log("Emailvalidator----++++$_emailTextContoller");
-    //   if (_emailTextContoller.text == "admin@gmail.com" &&
-    //       _passwordTextContoller.text == "admin") {
-    //     ScaffoldMessenger.of(context).showSnackBar(
-    //       const SnackBar(content: Text('Submitting data..')),
-    //     );
-    //     // ss();
-    //     Navigator.push(
-    //         context, MaterialPageRoute(builder: (_) => HomeScreen()));
-    //   }
-    //   //return null;
-    // } else {
-    //   ScaffoldMessenger.of(context).showSnackBar(
-    //     const SnackBar(content: Text('enter valid userId and Pass data..')),
-    //   );
-    //  // return null;
-    // }
-    //return null;
-  }
-    if (_emailTextContoller.text == "admin@gmail.com" &&
-          _passwordTextContoller.text == "admin") {
-        // ScaffoldMessenger.of(context).showSnackBar(
-        //   const SnackBar(content: Text('Submitting data..')),
-        // );
-        // ss();
-        Navigator.push(
-            context, MaterialPageRoute(builder: (_) => HomeScreen(name: _emailTextContoller.text,)));
-      }
-      //return null;
-    else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('enter valid userId and Pass data..')),
-      );
-     // return null;
     }
+    login();
+  }
 
-  //return null;
+  void login() async {
+    FirebaseAuth auth = FirebaseAuth.instance;
+    FirebaseFirestore db = FirebaseFirestore.instance;
+    // showLoaderDialog(context);
+    Dialogs.showLoadingDialog(context);
+    final String email = _emailTextContoller.text;
+    final String password = _passwordTextContoller.text;
+    try {
+      final UserCredential userCredential = await auth
+          .signInWithEmailAndPassword(email: email, password: password);
+      await db.collection("Users").doc(userCredential.user!.uid).get();
+
+      Navigator.pop(context);
+      Navigator.push(
+          context, MaterialPageRoute(builder: (context) => HomeScreen()));
+    } on FirebaseAuthException catch (e) {
+      Navigator.pop(context);
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              backgroundColor: Colors.redAccent,
+              content: Text('No User Found for that Email')),
+        );
+      } else if (e.code == 'wrong-password') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+              backgroundColor: Colors.redAccent,
+              content: Text('Account Already exists')),
+        );
+      }
+    }
+  }
 }
-}
-
-
-// void ss() {
-//    Navigator.push(
-//                     context, MaterialPageRoute(builder: (_) => HomeScreen()));
-// }
-
-
-
-
-
-
-// String ss() {
-
-//     if (_emailTextContoller == "admin") {
-//       return "";
-//     }else{
-//       return "invalida admin";
-//     }
-//     if (_passwordTextContoller =="admin") {
-//       return "";
-//         }else{
-//       return "invalidare admin";
-
-//     }
-
-//      ScaffoldMessenger.of(context).showSnackBar(
-//         const SnackBar(content: Text('Submitting data..')),
-//       );
-//     return "sucesess";
-//   }
-
-
-
-
